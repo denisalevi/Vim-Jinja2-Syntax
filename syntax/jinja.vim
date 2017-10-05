@@ -29,7 +29,7 @@ endif
 endif
 
 " Pull in the HTML syntax.
-if g:jinja_syntax_html
+if g:jinja_syntax_html && &ft =~ "html"
   if version < 600
     so <sfile>:p:h/html.vim
   else

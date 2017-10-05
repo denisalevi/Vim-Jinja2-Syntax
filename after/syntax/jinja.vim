@@ -1,5 +1,11 @@
-" load matchit config from jinja.vim
-runtime ftplugin/jinja.vim
+" Html files handle jinja highliting seperately and pure Jinja
+" files don't need snippet highlighting
+if &ft == 'jinja' || &ft =~ 'html' || exists('b:jinja_snippets_enabled')
+  finish
+else
+  " make sure this script gets sourced only once per buffer
+  let b:jinja_snippets_enabled = 1
+endif
 
 " Different syntax highlighting within regions of a file
 " http://vim.wikia.com/wiki/Different_syntax_highlighting_within_regions_of_a_file
@@ -40,8 +46,6 @@ endfunction
 " mixed filetypes where jinja is the last part (e.g. cpp.jinja)
 " have the first part loaded as syntax (cpp) and need extra
 " jinja syntax loading in correct file parts
-au FileType *.jinja call TextEnableCodeSnip('jinja', '{{', '}}')
-au FileType *.jinja call TextEnableCodeSnip('jinja', '{%', '%}')
-au FileType *.jinja call TextEnableCodeSnip('jinja', '{#', '#}')
-
-" vim:ft=vim:fdm=marker
+call TextEnableCodeSnip('jinja', '{{', '}}')
+call TextEnableCodeSnip('jinja', '{%', '%}')
+call TextEnableCodeSnip('jinja', '{#', '#}')

@@ -21,9 +21,11 @@
 "
 " }}}
 
-runtime ftplugin/html.vim
-runtime indent/html.vim
-runtime eclim/ftplugin/html.vim
+if &ft =~ 'html'
+  runtime ftplugin/html.vim
+  runtime indent/html.vim
+  runtime eclim/ftplugin/html.vim
+endif
 
 " Global Variables {{{
 if !exists('g:HtmlJinjaCompleteEndTag')
@@ -59,19 +61,22 @@ let g:HtmlJinjaBodyElements = [
 "    \ ['for', 'else', 'endfor'],
 
 " add matchit.vim support for jinja tags
-if !exists("b:match_words")
+if !exists("b:match_words") && &ft !~ 'html'
   let b:match_words = ""
 endif
-for element in g:HtmlJinjaBodyElements
-  let pattern = ''
-  for tag in element[:-2]
-    if pattern != ''
-      let pattern .= ':'
-    endif
-    let pattern .= '{%[-+]\?\s*\<' . tag . '\>' "\_.\{-}-\?%}'
+
+if exists("b:match_words")
+  for element in g:HtmlJinjaBodyElements
+    let pattern = ''
+    for tag in element[:-2]
+      if pattern != ''
+        let pattern .= ':'
+      endif
+      let pattern .= '{%[-+]\?\s*\<' . tag . '\>' "\_.\{-}-\?%}'
+    endfor
+    let pattern .= ':{%-\?\s*\<' . element[-1:][0] . '\>\ \?\w*\ \?-\?%}'
+    let b:match_words .= ',' . pattern
   endfor
-  let pattern .= ':{%-\?\s*\<' . element[-1:][0] . '\>\ \?\w*\ \?-\?%}'
-  let b:match_words .= ',' . pattern
-endfor
+endif
 
 " vim:ft=vim:fdm=marker
