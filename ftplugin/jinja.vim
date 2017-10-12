@@ -21,6 +21,16 @@
 "
 " }}}
 
+" enable jinja matchit by default
+if !exists('g:enable_jinja_matchit')
+  let g:enable_jinja_matchit = 1
+endif
+
+" finish if jinja matchit disabled
+if g:enable_jinja_matchit != 1
+  finish
+endif
+
 if &ft =~ 'html'
   runtime ftplugin/html.vim
   runtime indent/html.vim

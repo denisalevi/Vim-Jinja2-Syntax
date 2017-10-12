@@ -1,3 +1,13 @@
+" Jinja highlighting on by default
+if !exists('g:enable_jinja_highlighting')
+  let g:enable_jinja_highlighting = 1
+endif
+
+" Option to turn off Jinja highlighting
+if g:enable_jinja_highlighting == 0
+  finish
+endif
+
 " Html files handle jinja highliting seperately and pure Jinja
 " files don't need snippet highlighting
 if &ft == 'jinja' || &ft =~ 'html' || exists('b:jinja_snippets_enabled')
